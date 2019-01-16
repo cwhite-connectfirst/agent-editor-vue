@@ -4,7 +4,7 @@ import {AgentMap, AgentGroupMap, AgentGroup, Agent} from "../types/agents";
 import {RootState} from "../types/RootState";
 import AgentApi, {GetAgentsResult} from "../../api/agents";
 
-interface AgentState {
+export interface AgentState {
     agents: AgentMap,
     agentGroups: AgentGroupMap,
     agentGroupIds: AgentGroup["agentGroupId"][]
@@ -33,7 +33,9 @@ const actions: ActionTree<AgentState, RootState> = {
 const getters: GetterTree<AgentState, RootState> = {
     getAgentById: (state: AgentState) => (id: number): Agent => state.agents[id],
 
-    allAgentIds: (state: AgentState) => Object.keys(state.agents).map(Number)
+    allAgentIds: (state: AgentState) => Object.keys(state.agents).map(Number),
+
+    getAgentGroupById: (state: AgentState) => (id: number): AgentGroup => state.agentGroups[id]
 }
 
 const AgentModule: Module<AgentState, RootState> = {state, mutations, actions, getters};

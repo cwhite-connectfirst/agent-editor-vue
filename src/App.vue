@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <Agents/>
+    <AgentGroups/>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Agents from "./components/Agents.vue";
+import AgentGroups from "./components/AgentGroups.vue";
 import Store from "./store";
 
 @Component({
   components: {
-    Agents,
+    AgentGroups,
   },
 })
 export default class App extends Vue {
