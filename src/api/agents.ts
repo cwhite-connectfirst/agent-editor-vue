@@ -1,6 +1,6 @@
 import {normalize, schema} from "normalizr";
 import axios from "axios";
-import {AgentGroup, Agent} from "../store/types/agents";
+import {AgentGroupMap, AgentMap, AgentGroup} from "../store/types/agents";
 
 const agent = new schema.Entity('agents', {}, { idAttribute: "agentId" });
 
@@ -10,14 +10,10 @@ const agentGroups =  [ agentGroup ];
 
 export interface GetAgentsResult {
     entities: {
-        agentGroups: {
-            [key: number]: AgentGroup;
-        },
-        agents: {
-            [key: number]: Agent;
-        }
+        agentGroups: AgentGroupMap,
+        agents: AgentMap
     },
-    result: number[];
+    result: AgentGroup["agentGroupId"][];
 }
 
 // Stub for fetching agents

@@ -26,13 +26,21 @@
       <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul>
+
+    <agents/>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
-@Component
+import Agents from "./Agents.vue";
+
+@Component({
+  components: {
+    "agents": Agents
+  }
+})
 export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
 }

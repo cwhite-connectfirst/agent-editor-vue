@@ -18,3 +18,11 @@ export interface AgentGroup {
     groupName: string;
     agents: number[];
 }
+
+export interface AgentMap {
+    [key: number]: Agent;
+}
+
+export interface AgentGroupMap {
+    [key: number]: AgentGroup;
+}
