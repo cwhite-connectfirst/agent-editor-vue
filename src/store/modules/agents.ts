@@ -1,6 +1,7 @@
-import {ActionContext} from "vuex";
+import {ActionContext, Module, ActionTree, MutationTree, GetterTree} from "vuex";
 
-import {AgentMap, AgentGroupMap, AgentGroup} from "../types/agents";
+import {AgentMap, AgentGroupMap, AgentGroup, Agent} from "../types/agents";
+import {RootState} from "../types/RootState";
 import AgentApi, {GetAgentsResult} from "../../api/agents";
 
 interface AgentState {
@@ -15,7 +16,7 @@ const state: AgentState = {
     agentGroupIds: []
 }
 
-const mutations = {
+const mutations: MutationTree<AgentState> = {
     initialize(state: AgentState, {entities: {agents, agentGroups}, result}: GetAgentsResult) {
         state.agents = agents,
         state.agentGroups = agentGroups,
@@ -23,20 +24,18 @@ const mutations = {
     }
 }
 
-const actions = {
+const actions: ActionTree<AgentState, RootState> = {
     async initialize({ commit }: ActionContext<AgentState, {}>) {
         commit("initialize", await AgentApi.getAgents());
     }
 }
 
-const getters = {
-    agentById(state: AgentState, id: number) {
-        return state.agents[id];
-    },
+const getters: GetterTree<AgentState, RootState> = {
+    getAgentById: (state: AgentState) => (id: number): Agent => state.agents[id],
 
-    allAgentIds(state: AgentState) {
-        return Object.keys(state.agents).map(Number);
-    }
+    allAgentIds: (state: AgentState) => Object.keys(state.agents).map(Number)
 }
 
-export default {state, mutations, actions, getters};
+const AgentModule: Module<AgentState, RootState> = {state, mutations, actions, getters};
+
+export default AgentModule;

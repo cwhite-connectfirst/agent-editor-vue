@@ -3,7 +3,7 @@
         <h1>Stub for Agent Groups</h1>
         <ul id="all-agents-list">
             <li v-for="agentId in allAgentIds" v-bind:key="agentId">
-                <agent :agent-id="agentId"/>
+                <Agent :agent-id="agentId"/>
             </li>
         </ul>
     </div>
@@ -17,10 +17,8 @@ import {mapGetters} from "vuex";
 import Agent from "./Agent";
 
 @Component({
-    computed: {
-        ...mapGetters(["allAgentIds"])
-    },
-    components: {"agent": Agent}
+    computed: { ...mapGetters(["allAgentIds"]) },
+    components: { Agent }
 })
 export default class Agents extends Vue {}
 </script>

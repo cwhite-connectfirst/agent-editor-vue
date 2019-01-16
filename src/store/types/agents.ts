@@ -1,5 +1,6 @@
 export enum AgentTypes {
-    AGENT = "AGENT"
+    AGENT = "AGENT",
+    SUPERVISOR = "SUPERVISOR"
 }
 
 export interface Agent {
