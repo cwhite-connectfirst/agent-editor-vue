@@ -1,6 +1,6 @@
 import {normalize, schema} from "normalizr";
 import axios from "axios";
-import {AgentGroupMap, AgentMap, AgentGroup} from "../store/types/agents";
+import {AgentGroupMap, AgentMap, Agent, AgentGroup, AgentDetails} from "../store/types/agents";
 
 const agent = new schema.Entity('agents', {}, { idAttribute: "agentId" });
 
@@ -16,16 +16,25 @@ export interface GetAgentsResult {
     result: AgentGroup["agentGroupId"][];
 }
 
+const accountId = 99999999;
+const defaultConfig = {
+    headers: {
+        "x-auth-token": "033fbe96-057c-493a-8d73-2bf3e5bf9bd4"
+    }
+}
+
 // Stub for fetching agents
 export default {
     async getAgents(): Promise<GetAgentsResult> {
         return axios
-        .get("/api/v2-skinny/admin/accounts/99999999/agentGroups/withActiveChildren", {
-            headers: {
-                "x-auth-token": "33af27fd-4a22-431d-90bf-19bf63d8493a"
-            }
-        })
+        .get(`/api/v2-skinny/admin/accounts/${accountId}/agentGroups/withActiveChildren`, {...defaultConfig})
         .then((result: any): GetAgentsResult => normalize(result.data, agentGroups));
+    },
+
+    async getAgentDetails(agentGroupId: AgentGroup["agentGroupId"], agentId: Agent["agentId"]): Promise<AgentDetails> {
+        return axios
+        .get(`/api/v1/admin/accounts/${accountId}/agentGroups/${agentGroupId}/agents/${agentId}`, {...defaultConfig})
+        .then((result: any) => result.data);
     }
 }
 

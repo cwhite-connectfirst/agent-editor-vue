@@ -1,12 +1,11 @@
 <template>
-    <div class="agent-group">                
-        <h4>{{agentGroupName}}</h4>
-        <ul class="agent-group-list">
-            <li v-for="agentId of agentGroup.agents" v-bind:key="agentId">
+    <b-card :title="agentGroupName" class="agent-group">                
+        <b-list-group class="agent-group-list">
+            <b-list-group-item v-for="agentId of agentGroup.agents" v-bind:key="agentId">
                 <Agent :agent-id="agentId"/>
-            </li>
-        </ul>
-    </div>
+            </b-list-group-item>
+        </b-list-group>
+    </b-card>
 </template>
 
 <script lang="ts">
@@ -35,3 +34,11 @@ export default class AgentGroup extends Vue {
     }
 }
 </script>
+
+<style>
+ .agent-group {
+     margin: 20px;
+     max-width: 300px;
+     display: inline-block;
+ }
+</style>
