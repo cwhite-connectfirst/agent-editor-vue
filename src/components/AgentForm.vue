@@ -90,9 +90,9 @@ export default class AddEditAgent extends Vue {
                 return "Edit Agent";
         }
     }
-    
+
     async onSubmit(event: Event) {
-        await AgentApi.updateAgentDetails({...this._agentDetails, ...this.$data.form});
+        await this.$store.dispatch("updateAgent", {agent: this._agentDetails, propsToUpdate: this.$data.form});
         this.$modal.hide(ModalNames.ADD_EDIT_AGENT);
     }
 
