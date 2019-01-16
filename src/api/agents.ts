@@ -23,7 +23,6 @@ const defaultConfig = {
     }
 }
 
-// Stub for fetching agents
 export default {
     async getAgents(): Promise<GetAgentsResult> {
         return axios
@@ -34,6 +33,12 @@ export default {
     async getAgentDetails(agentGroupId: AgentGroup["agentGroupId"], agentId: Agent["agentId"]): Promise<AgentDetails> {
         return axios
         .get(`/api/v1/admin/accounts/${accountId}/agentGroups/${agentGroupId}/agents/${agentId}`, {...defaultConfig})
+        .then((result: any) => result.data);
+    },
+
+    async updateAgentDetails(agent: AgentDetails): Promise<AgentDetails> {
+        return axios
+        .put(`/api/v1/admin/accounts/${accountId}/agentGroups/${agent.agentGroup.id}/agents/${agent.agentId}`, agent, {...defaultConfig})
         .then((result: any) => result.data);
     }
 }
