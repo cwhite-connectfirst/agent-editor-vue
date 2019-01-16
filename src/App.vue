@@ -9,6 +9,8 @@ import { Component, Vue } from 'vue-property-decorator';
 import AgentGroups from "./components/AgentGroups.vue";
 import Store from "./store";
 
+import EventEmitter, {OPEN_ADD_EDIT_MODAL, OpenAddEditModalData} from "./events";
+
 @Component({
   components: {
     AgentGroups,
@@ -17,6 +19,16 @@ import Store from "./store";
 export default class App extends Vue {
   created() {
     Store.dispatch("initialize");
+    EventEmitter.$on(OPEN_ADD_EDIT_MODAL, this.onOpenAddEditModal);
+  }
+
+  destroyed() {
+    EventEmitter.$off(OPEN_ADD_EDIT_MODAL, this.onOpenAddEditModal);
+  }
+
+  onOpenAddEditModal(payload: OpenAddEditModalData) {
+    // eslint-disable-next-line
+    console.log(payload);
   }
 }
 </script>

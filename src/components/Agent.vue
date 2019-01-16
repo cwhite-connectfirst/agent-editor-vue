@@ -1,5 +1,5 @@
 <template>
-    <div class="agent">
+    <div class="agent" @click="onClick">
         <span>
             {{agent.agentId}}
         </span>
@@ -19,6 +19,7 @@ import {Getter} from "vuex-class";
 
 import {Agent as IAgent} from "../store/types/agents";
 import store from "../store";
+import EventEmitter, {OPEN_ADD_EDIT_MODAL, OpenAddEditModalData} from "../events";
 
 @Component({
     props: {
@@ -30,6 +31,10 @@ export default class Agent extends Vue {
 
     get agent(): IAgent {
         return this.getAgentById((<any>this).agentId);
+    }
+
+    onClick() {
+        EventEmitter.$emit(OPEN_ADD_EDIT_MODAL, {agentId: this.agent.agentId, agentGroupId: this.agent.agentGroupId});
     }
 }
 </script>

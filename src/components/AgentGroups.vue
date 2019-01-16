@@ -1,7 +1,9 @@
 <template>
-    <div id="agent-groups">
+    <div id="agent-groups-container">
         <h1>Agent Groups</h1>
-        <AgentGroup v-for="agentGroupId in agentGroupIds" v-bind:key="agentGroupId" :agent-group-id="agentGroupId"/>
+        <div id="agent-groups">
+            <AgentGroup v-for="agentGroupId in agentGroupIds" v-bind:key="agentGroupId" :agent-group-id="agentGroupId"/>
+        </div>
     </div>
 </template>
 
@@ -27,11 +29,19 @@ export default class Agents extends Vue {
 </script>
 
 <style lang="scss">
-#agent-groups {
-    text-align: left;
+h1 {
+    text-align: center;
+}
 
-    h1 {
-        text-align: center;
-    }
+#agent-groups-container {
+    max-width: 100vw;
+}
+
+#agent-groups {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    max-width: 100%;
 }
 </style>

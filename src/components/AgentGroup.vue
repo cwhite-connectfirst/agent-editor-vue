@@ -38,7 +38,8 @@ export default class AgentGroup extends Vue {
 <style>
  .agent-group {
      margin: 20px;
-     max-width: 300px;
-     display: inline-block;
+     width: 400px;
+     flex-grow: 0;
+     flex-shrink: 0;
  }
 </style>
