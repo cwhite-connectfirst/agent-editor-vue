@@ -14,16 +14,17 @@ import Component from "vue-class-component";
 import {Getter} from "vuex-class";
 
 import {AgentGroup as IAgentGroup} from "../store/types";
+import {getters} from "../store";
 import Agent from "./Agent.vue";
 
 @Component({
     props: {
         agentGroupId: Number
     },
-    components: {Agent}
+    components: {Agent},
 })
 export default class AgentGroup extends Vue {
-    @Getter getAgentGroupById!: (id: number) => IAgentGroup
+    getAgentGroupById: (id: number) => IAgentGroup = getters.getAgentGroupById(this.$store);
 
     get agentGroup() {
         return this.getAgentGroupById((<any>this).agentGroupId);

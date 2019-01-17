@@ -121,3 +121,9 @@ export interface AgentDetailsAgentGroup {
     id: number;
     description: "Cable Group";
 }
+
+export interface AgentState {
+    agents: AgentMap,
+    agentGroups: AgentGroupMap,
+    agentGroupIds: AgentGroup["agentGroupId"][]
+}

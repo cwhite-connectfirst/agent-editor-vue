@@ -28,6 +28,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import {AgentDetails} from "../store/types";
+import {actions} from "../store";
 import AgentApi from "../api/agents";
 import ModalNames from "../utils/modal-names";
 
@@ -92,7 +93,7 @@ export default class AddEditAgent extends Vue {
     }
 
     async onSubmit(event: Event) {
-        await this.$store.dispatch("updateAgent", {agent: this._agentDetails, propsToUpdate: this.$data.form});
+        await actions.updateAgent(this.$store, {agent: this._agentDetails, propsToUpdate: this.$data.form});
         this.$modal.hide(ModalNames.ADD_EDIT_AGENT);
     }
 

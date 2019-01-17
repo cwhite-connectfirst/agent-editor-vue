@@ -1,15 +1,10 @@
-import {ActionContext, Module, ActionTree, MutationTree, GetterTree} from "vuex";
+import {ActionContext, Module, MutationTree} from "vuex";
+import { getStoreAccessors } from "vuex-typescript";
 
-import {AgentMap, AgentGroupMap, AgentGroup, Agent, AgentDetails} from "../types/agents";
-import {RootState} from "../types/RootState";
+import {AgentGroup, Agent, AgentDetails, AgentState, RootState} from "../types";
 import AgentApi, {GetAgentsResult} from "../../api/agents";
-import agents from '../../api/agents';
 
-export interface AgentState {
-    agents: AgentMap,
-    agentGroups: AgentGroupMap,
-    agentGroupIds: AgentGroup["agentGroupId"][]
-}
+const { commit, read, dispatch } = getStoreAccessors<AgentState, RootState>("agents");
 
 const state: AgentState = {
     agents: {},
@@ -17,14 +12,19 @@ const state: AgentState = {
     agentGroupIds: []
 }
 
-const mutations: MutationTree<AgentState> = {
+interface UpdateAgentPayload {
+    agent: AgentDetails,
+    propsToUpdate: any
+}
+
+const moduleMutations = {
     initialize(state: AgentState, {entities: {agents, agentGroups}, result}: GetAgentsResult) {
         state.agents = agents,
         state.agentGroups = agentGroups,
         state.agentGroupIds = result
     },
 
-    updateAgent(state: AgentState, payload: {agent: AgentDetails, propsToUpdate: any}) {
+    updateAgent(state: AgentState, payload: UpdateAgentPayload) {
         const {propsToUpdate, agent} = payload;
         const agentToUpdate = state.agents[agent.agentId];
 
@@ -36,21 +36,31 @@ const mutations: MutationTree<AgentState> = {
     }
 }
 
-const actions: ActionTree<AgentState, RootState> = {
-    async initialize({ commit }: ActionContext<AgentState, RootState>) {
-        commit("initialize", await AgentApi.getAgents());
+export const mutations = {
+    initialize: commit(moduleMutations.initialize),
+    updateAgent: commit(moduleMutations.updateAgent)
+};
+
+const moduleActions = {
+    async initialize(context: ActionContext<AgentState, RootState>) {
+        mutations.initialize(context, await AgentApi.getAgents());
     },
 
-    async updateAgent({ commit }: ActionContext<AgentState, RootState>, payload: {agent: AgentDetails, propsToUpdate: any}) {
+    async updateAgent(context: ActionContext<AgentState, RootState>, payload: {agent: AgentDetails, propsToUpdate: any}) {
         const {agent, propsToUpdate} = payload;
         
         let updatedAgent = {...agent, ...propsToUpdate as Agent};
         updatedAgent = await AgentApi.updateAgentDetails(updatedAgent);
-        commit("updateAgent", {agent: updatedAgent, propsToUpdate});
+        mutations.updateAgent(context, {agent: updatedAgent, propsToUpdate})
     }
 }
 
-const getters: GetterTree<AgentState, RootState> = {
+export const actions = {
+    initialize: dispatch(moduleActions.initialize),
+    updateAgent: dispatch(moduleActions.updateAgent)
+};
+
+const moduleGetters = {
     getAgentById: (state: AgentState) => (id: number): Agent => state.agents[id],
 
     allAgentIds: (state: AgentState) => Object.keys(state.agents).map(Number),
@@ -58,6 +68,12 @@ const getters: GetterTree<AgentState, RootState> = {
     getAgentGroupById: (state: AgentState) => (id: number): AgentGroup => state.agentGroups[id]
 }
 
-const AgentModule: Module<AgentState, RootState> = {state, mutations, actions, getters};
+export const getters = {
+    getAgentById: read(moduleGetters.getAgentById),
+    allAgentIds: read(moduleGetters.allAgentIds),
+    getAgentGroupById: read(moduleGetters.getAgentGroupById)
+}
+
+const AgentModule: Module<AgentState, RootState> = {namespaced: true, state, mutations: moduleMutations, actions: moduleActions, getters: moduleGetters};
 
 export default AgentModule;

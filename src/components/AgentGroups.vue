@@ -14,7 +14,7 @@ import {mapGetters} from "vuex";
 import {State} from "vuex-class";
 
 import AgentGroup from "./AgentGroup.vue";
-import {AgentState} from "../store/modules/agents";
+import {AgentState} from "../store/types";
 
 @Component({
     components: { AgentGroup }

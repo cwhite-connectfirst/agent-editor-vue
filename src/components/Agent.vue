@@ -17,8 +17,8 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import {Getter} from "vuex-class";
 
-import {Agent as IAgent} from "../store/types/agents";
-import store from "../store";
+import {Agent as IAgent} from "../store/types";
+import {getters} from "../store";
 import EventEmitter, {OPEN_ADD_EDIT_MODAL, OpenAddEditModalData} from "../events";
 
 @Component({
@@ -27,7 +27,7 @@ import EventEmitter, {OPEN_ADD_EDIT_MODAL, OpenAddEditModalData} from "../events
     },
 })
 export default class Agent extends Vue {
-    @Getter getAgentById!: (id: number) => IAgent;
+    getAgentById: (id: number) => IAgent = getters.getAgentById(this.$store);
 
     get agent(): IAgent {
         return this.getAgentById((<any>this).agentId);

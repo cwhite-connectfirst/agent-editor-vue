@@ -12,7 +12,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import AgentGroups from "./components/AgentGroups.vue";
 import AgentForm, {FormActions} from "./components/AgentForm.vue";
-import Store from "./store";
+import {actions} from "./store";
 import ModalNames from "./utils/modal-names";
 
 import EventEmitter, {OPEN_ADD_EDIT_MODAL, OpenAddEditModalData} from "./events";
@@ -25,7 +25,7 @@ import EventEmitter, {OPEN_ADD_EDIT_MODAL, OpenAddEditModalData} from "./events"
 })
 export default class App extends Vue {
   created() {
-    Store.dispatch("initialize");
+    actions.initialize(this.$store);
     EventEmitter.$on(OPEN_ADD_EDIT_MODAL, this.onOpenAddEditModal);
   }
 
